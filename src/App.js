@@ -31,11 +31,11 @@ function App() {
   
   return (
     <div className="App">
-      <Layouts/>
+      {/* <Layouts/>
       <h1>antd practice</h1>
       <Buttons/>
       <Icons/>
-      <Deviders/>
+      <Deviders/> */}
       <Application notes={notes}/>
     </div>
   )
