@@ -31,23 +31,23 @@ function App() {
   // recursion practice
   // kind of like a loop. it is a function that calls itself. should have an escape sequence or js will crash . 
 
-  let categories= [
-    { id: 'animals', parent: null },
-    { id: 'mammals', parent: 'animals' },
-    { id: 'cats', parent: 'mammals' },
-    { id: 'dogs', parent: 'mammals' },
-    { id: 'chihuahua', parent: 'dogs' },
-    { id: 'labrador', parent: 'dogs' },
-    { id: 'persian', parent: 'cats' },
-    { id: 'siamese', parent: 'cats' }
-   ];
+  // let categories= [
+  //   { id: 'animals', parent: null },
+  //   { id: 'mammals', parent: 'animals' },
+  //   { id: 'cats', parent: 'mammals' },
+  //   { id: 'dogs', parent: 'mammals' },
+  //   { id: 'chihuahua', parent: 'dogs' },
+  //   { id: 'labrador', parent: 'dogs' },
+  //   { id: 'persian', parent: 'cats' },
+  //   { id: 'siamese', parent: 'cats' }
+  //  ];
 
-  const countdown =(num)=>{
-    if (num === 0) return;
-    console.log(num)
-    countdown(num-1)
-  }
-  countdown(44)
+  // const countdown =(num)=>{
+  //   if (num === 0) return;
+  //   console.log(num)
+  //   countdown(num-1)
+  // }
+  // countdown(44)
   // end of recursion
   return (
     <div className="App">
