@@ -1,18 +1,19 @@
 import './App.css';
 import Application from './components/application';
-import axios from 'axios'
 import {useState,useEffect} from 'react'
+import noteService from './services/notes'
 
 
 function App() {
   const [notes,setNotes]=useState([]);
+  console.log(noteService)
 
   useEffect(()=>{
     console.log('effect')
-    axios.get('http://localhost:3001/notes')
-    .then(res=>{
+    noteService.getAll()
+    .then(initialNotes=>{
       console.log('promise is fulfilled')
-      setNotes(res.data) })
+      setNotes(initialNotes) })
       
 
   },[])

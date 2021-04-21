@@ -1,6 +1,6 @@
 import Note from "../note";
 import {useState} from 'react'
-import axios from 'axios'
+import noteService from '../../services/notes.js'
 
 const Application = ({notes,setNotes}) => {
   const [newNote, setNewNote] = useState(
@@ -10,7 +10,6 @@ const Application = ({notes,setNotes}) => {
     
   const addNote = (event) =>{
     event.preventDefault()
-    console.log('clicked',event.target)
 
     const noteObject = {
       content: newNote,
@@ -18,11 +17,11 @@ const Application = ({notes,setNotes}) => {
       important: Math.random() < 0.5,
      
     }
-    axios.post('http://localhost:3001/notes',noteObject)
-    .then(res=>{
-        setNotes(notes.concat(res.data))
+    noteService.create(noteObject)
+    .then(returnedNote=>{
+        setNotes(notes.concat(returnedNote))
         setNewNote('')
-      console.log(res)})
+      })
    
   }
 
@@ -31,13 +30,12 @@ const Application = ({notes,setNotes}) => {
     setNewNote(event.target.value)
   }
   const toggleImportanceof=(id)=>{
-    const url = `http://localhost:3001/notes/${id}`
     const note = notes.find(n=>n.id ===id)
     const changedNote ={...note,important: !note.important}
 
-    axios.put(url,changedNote)
-    .then(res=>{
-      setNotes(notes.map(note=> note.id !==id? note : res.data))
+    noteService.update(id,changedNote)
+    .then(returnedNote=>{
+      setNotes(notes.map(note=> note.id !==id? note : returnedNote))
     })
   }
 
