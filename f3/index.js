@@ -1,6 +1,8 @@
 // const { request, response } = require('express')
+// const { request } = require('express')
 const express = require('express')
 const app = express()
+app.use(express.json())
 
 let notes = [
     {
@@ -42,8 +44,20 @@ app.get('/api/notes/:id',(request,response)=>{
   }
   
 })
+app.delete('/api/notes/:id',(request,response)=>{
+  const id=Number(request.params.id)
+  notes = notes.filter(note=>note.id !== id)
+console.log(id , 'deleted')
+  response.status(204).end()
+})
 
-const PORT =3001
+app.post('/api/notes',(request,response)=>{
+  const note = request.body
+  console.log(note)
+  response.json(note)
+})
+
+const PORT = 3001
 app.listen(PORT,()=>{
-  console.log('server running on port ' + PORT)
+  console.log('server running on port ' , PORT)
 })
