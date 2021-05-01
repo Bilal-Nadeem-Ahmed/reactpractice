@@ -1,4 +1,12 @@
 
 
 
-GET http://localhost:3001/api/notes
+POST   http://localhost:3000/api/notes/ 
+Content-Type: application/json
+
+{
+    "content" : "ayayay",
+    "important": true
+}
+###
+GET http://localhost:3001/api/notes/

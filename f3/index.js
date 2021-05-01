@@ -1,5 +1,4 @@
-// const { request, response } = require('express')
-// const { request } = require('express')
+const { request, response } = require('express')
 const express = require('express')
 const app = express()
 app.use(express.json())
@@ -51,13 +50,52 @@ console.log(id , 'deleted')
   response.status(204).end()
 })
 
+const generateId=()=>{
+  const maxId = notes.length>0 ? Math.max(...notes.map(n=>n.id)) : 0
+  return maxId + 1
+}
+
 app.post('/api/notes',(request,response)=>{
-  const note = request.body
-  console.log(note)
+
+  const body = request.body
+
+  if(!body.content) {
+    return response.status(400).json({error:'content missing'})
+  }
+
+  const note = {
+    content: body.content,
+    id: generateId(),
+    important: body.important || false,
+    date: new Date()
+  }
+  notes.concat(note)
+  console.log(notes)
+  
   response.json(note)
 })
 
-const PORT = 3001
+//middleware
+
+const requestLogger = (request,response,next)=>{
+  console.log('method:',request.method)
+  console.log('Path:',request.path)
+  console.log('body:' , request.body)
+  console.log('---')
+  next()
+}
+
+app.use(requestLogger)
+
+
+// 404 middleware 
+
+const unknownEndpoint =(request,response)=>{
+  response.status(404).send({error: 'unknown endpoint'})
+}
+app.use(unknownEndpoint)
+
+const PORT = 3000
 app.listen(PORT,()=>{
   console.log('server running on port ' , PORT)
 })
