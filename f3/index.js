@@ -3,10 +3,13 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 const morgan = require('morgan')
+morgan.token('resdata', (request,response)=> JSON.stringify(request.body))
 
-// morgan.token('resdata', (request,response)=> console.log(request.body.data))
+// app.use(morgan('tiny')) 
 
-app.use(morgan('tiny')) 
+
+app.use(morgan(':method :url :status :response-time ms - :resdata '));
+
 
 
 
@@ -78,7 +81,7 @@ app.post('/api/notes',(request,response)=>{
     date: new Date()
   }
   notes.concat(note)
-  console.log(notes)
+  // console.log(notes)
   
   response.json(note)
 })
@@ -103,7 +106,11 @@ const unknownEndpoint =(request,response)=>{
 }
 app.use(unknownEndpoint)
 
-const PORT = 3001
+
+
+
+
+const PORT = 3005
 app.listen(PORT,()=>{
   console.log('server running on port ' , PORT)
 })
