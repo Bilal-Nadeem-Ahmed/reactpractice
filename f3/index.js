@@ -2,6 +2,14 @@ const { request, response } = require('express')
 const express = require('express')
 const app = express()
 app.use(express.json())
+const morgan = require('morgan')
+
+// morgan.token('resdata', (request,response)=> console.log(request.body.data))
+
+app.use(morgan('tiny')) 
+
+
+
 
 let notes = [
     {
@@ -24,7 +32,7 @@ let notes = [
     }
   ]
 
-
+ 
 
 
 app.get('/',(request,response)=>{
@@ -77,15 +85,15 @@ app.post('/api/notes',(request,response)=>{
 
 //middleware
 
-const requestLogger = (request,response,next)=>{
-  console.log('method:',request.method)
-  console.log('Path:',request.path)
-  console.log('body:' , request.body)
-  console.log('---')
-  next()
-}
+// const requestLogger = (request,response,next)=>{
+//   console.log('method:',request.method)
+//   console.log('Path:',request.path)
+//   console.log('body:' , request.body)
+//   console.log('---')
+//   next()
+// }
 
-app.use(requestLogger)
+// app.use(requestLogger)
 
 
 // 404 middleware 
@@ -95,7 +103,7 @@ const unknownEndpoint =(request,response)=>{
 }
 app.use(unknownEndpoint)
 
-const PORT = 3000
+const PORT = 3001
 app.listen(PORT,()=>{
   console.log('server running on port ' , PORT)
 })
