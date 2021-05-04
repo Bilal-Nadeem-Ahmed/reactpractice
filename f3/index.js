@@ -10,6 +10,9 @@ morgan.token('resdata', (request,response)=> JSON.stringify(request.body))
 
 app.use(morgan(':method :url :status :response-time ms - :resdata '));
 
+const cors= require('cors')
+app.use(cors())
+
 
 
 
@@ -66,6 +69,24 @@ const generateId=()=>{
   return maxId + 1
 }
 
+app.put('/api/notes/:id',(request,response)=>{
+
+  const body = request.body
+
+  
+
+  const note = {
+    content: body.content,
+    id: body.id,
+    important: body.important ,
+    date: body.date
+  }
+  notes.map(item=>item.id===note.id? note:item)
+  // console.log(notes)
+  
+  response.json(note)
+})
+
 app.post('/api/notes',(request,response)=>{
 
   const body = request.body
@@ -110,7 +131,7 @@ app.use(unknownEndpoint)
 
 
 
-const PORT = 3005
+const PORT = 3001
 app.listen(PORT,()=>{
   console.log('server running on port ' , PORT)
 })
