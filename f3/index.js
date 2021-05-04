@@ -72,9 +72,6 @@ const generateId=()=>{
 app.put('/api/notes/:id',(request,response)=>{
 
   const body = request.body
-
-  
-
   const note = {
     content: body.content,
     id: body.id,
@@ -131,7 +128,7 @@ app.use(unknownEndpoint)
 
 
 
-const PORT = 3001
+const PORT = process.env.PORT||3001
 app.listen(PORT,()=>{
   console.log('server running on port ' , PORT)
 })
