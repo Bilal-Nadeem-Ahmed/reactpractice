@@ -2,6 +2,7 @@ require('dotenv').config()
 const { request, response } = require('express')
 const express = require('express')
 const app = express()
+const Note = require('./models/note')
 app.use(express.json())
 const morgan = require('morgan')
 morgan.token('resdata', (request,response)=> JSON.stringify(request.body))
@@ -17,7 +18,7 @@ app.use(cors())
 
 
 
-const Note = require('./models/note')
+
 
 
 
@@ -32,41 +33,53 @@ app.get('/api/notes', (request, response) => {
     response.json(notes)
   })
 })
-app.get('/api/notes/:id',(request,response)=>{
-Note.findById(request.params.id).then(note=>{
-  response.json(note)
-})
+app.get('/api/notes/:id',(request,response,next)=>{
+Note.findById(request.params.id)
+.then(note=>{
+  if (note){
+    response.json(note)
+  } else {
+    response.status(404).end()
+  }
   
 })
-app.delete('/api/notes/:id',(request,response)=>{
-  const id=Number(request.params.id)
-  notes = notes.filter(note=>note.id !== id)
-console.log(id , 'deleted')
-  response.status(204).end()
+.catch(error=>next(error))
+  
+})
+app.delete('/api/notes/:id',(request,response,next)=>{
+  Note.findByIdAndRemove(request.params.id)
+  .then(result=>{
+    response.status(204).end()
+  })
+  .catch(error=>next(error))
+//   const id=Number(request.params.id)
+//   notes = notes.filter(note=>note.id !== id)
+// console.log(id , 'deleted')
+//   response.status(204).end()
 })
 
 
 
-app.put('/api/notes/:id',(request,response)=>{
-
+app.put('/api/notes/:id', (request, response, next) => {
   const body = request.body
+
   const note = {
     content: body.content,
-    id: body.id,
-    important: body.important ,
-    date: body.date
+    important: body.important,
   }
-  notes.map(item=>item.id===note.id? note:item)
-  // console.log(notes)
-  
-  response.json(note)
+
+  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then(updatedNote => {
+      response.json(updatedNote)
+    })
+    .catch(error => next(error))
 })
 
 app.post('/api/notes',(request,response)=>{
 
   const body = request.body
 
-  if(!body.content) {
+  if(body.content===undefined) {
     return response.status(400).json({error:'content missing'})
   }
 
@@ -80,7 +93,7 @@ app.post('/api/notes',(request,response)=>{
    response.json(savedNote)
  })
   
-  response.json(note)
+  // response.json(note)
 })
 
 //middleware
@@ -103,7 +116,18 @@ const unknownEndpoint =(request,response)=>{
 }
 app.use(unknownEndpoint)
 
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
 
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+// this has to be the last loaded middleware.
+app.use(errorHandler)
 
 
 
