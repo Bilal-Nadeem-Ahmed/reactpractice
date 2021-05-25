@@ -14,4 +14,3 @@ GET http://localhost:3001/api/notes/
 DELETE http://localhost:3001/api/notes/6093e0e739c92c26cd2c0fef
 
 
-# {"_id":{"$oid":"60a297c918e650547e46aa9e"}
