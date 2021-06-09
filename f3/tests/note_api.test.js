@@ -6,18 +6,7 @@ const app = require('../app')
 const api = supertest(app)
 
 const Note = require('../models/note')
-const initialNotes = [
-  {
-    content: 'HTML is easy',
-    date: new Date(),
-    important: false,
-  },
-  {
-    content: 'Browser can execute only Javascript',
-    date: new Date(),
-    important: true,
-  },
-]
+
 //Runs a function before each of the tests in this file runs. If the function returns a promise or is a generator, Jest waits for that promise to resolve before running the test.
 beforeEach(async () => {
   await Note.deleteMany({})
@@ -26,8 +15,6 @@ beforeEach(async () => {
   noteObject = new Note(helper.initialNotes[1])
   await noteObject.save()
 })
-
-
 
 
 test('notes are returned as json', async () => {
@@ -88,6 +75,43 @@ test('note without content is not added', async () => {
 
 
 })
+
+test('a specific note can be viewed', async () => {
+  const notesAtStart = await helper.notesInDb()
+
+  const noteToView = notesAtStart[0]
+
+  const resultNote = await api
+    .get(`/api/notes/${noteToView.id}`)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const processedNoteToView = JSON.parse(JSON.stringify(noteToView))
+  expect(resultNote.body).toEqual(processedNoteToView)
+
+})
+
+test('a note can be deleted', async () => {
+  const notesAtStart = await helper.notesInDb()
+  const noteToDelete = notesAtStart[0]
+
+  await api
+    .delete(`/api/notes/${noteToDelete.id}`)
+    .expect(204)
+
+  const notesAtEnd = await helper.notesInDb()
+
+  expect(notesAtEnd).toHaveLength(
+    helper.initialNotes.length - 1
+  )
+
+  const contents = notesAtEnd.map(r => r.content)
+
+  expect(contents).not.toContain(noteToDelete.content)
+})
+
+
+
 
 afterAll(() => {
   mongoose.connection.close()
