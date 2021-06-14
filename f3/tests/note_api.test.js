@@ -10,14 +10,23 @@ const Note = require('../models/note')
 //Runs a function before each of the tests in this file runs. If the function returns a promise or is a generator, Jest waits for that promise to resolve before running the test.
 beforeEach(async () => {
   await Note.deleteMany({})
-  let noteObject = new Note(helper.initialNotes[0])
-  await noteObject.save()
-  noteObject = new Note(helper.initialNotes[1])
-  await noteObject.save()
+
+  // the below code can be used but using Promise.all executes the promises paralell to one another, if this might result in an issue we can use a for..of block such as below
+  // const noteObjects= helper.initialNotes
+  //   .map(note => new Note(note))
+  // const promiseArray = noteObjects.map(note => note.save())
+  // await Promise.all(promiseArray)
+
+  for( let note of helper.initialNotes){
+    let noteObject = new Note(note)
+    await noteObject.save()
+  }
+
 })
 
 
 test('notes are returned as json', async () => {
+  console.log('entered first test')
   await api
     .get('/api/notes')
     .expect(200)
