@@ -12,7 +12,7 @@ test('palindrome of react',() => {
   expect (result).toBe('tcaer')
 })
 
-test('Palindrome of racecar',() => {
+test('Palindrome of the word racecar',() => {
   const result=palindrome('racecar')
   expect(result).toBe('racecar')
 })
