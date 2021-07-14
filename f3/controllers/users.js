@@ -20,7 +20,8 @@ usersRouter.post('/', async (request, response) => {
 })
 
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({})
+  // populte is getting the link between the notes and the user and bringing that data here
+  const users = await User.find({}).populate('notes',{ content: 1,date:1 })
   response.json(users)
 })
 
