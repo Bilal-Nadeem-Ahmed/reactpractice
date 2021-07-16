@@ -5,7 +5,9 @@ const app = require('../app')
 const api = supertest(app)
 const Note = require('../models/note')
 
+
 //Runs a function before each of the tests in this file runs. If the function returns a promise or is a generator, Jest waits for that promise to resolve before running the test.
+
 beforeEach(async () => {
   await Note.deleteMany({})
 
@@ -14,7 +16,9 @@ beforeEach(async () => {
     await noteObject.save()
   }
 
+
 })
+
 
 describe('when there are initially some notes saved', () => {
   test('notes are returned as json', async () => {
@@ -65,60 +69,6 @@ describe('viewing a specific note', () => {
   })
 })
 
-describe('addition of a new note', () => {
-  test('succeeds with valid data', async () => {
-    const newNote = {
-      content: 'async/await simplifies making async calls',
-      important: true,
-    }
-
-    await api
-      .post('/api/notes')
-      .send(newNote)
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
-
-
-    const notesAtEnd = await helper.notesInDb()
-    expect(notesAtEnd).toHaveLength(helper.initialNotes.length + 1)
-
-    const contents = notesAtEnd.map(n => n.content)
-    expect(contents).toContain(
-      'async/await simplifies making async calls'
-    )
-  })
-
-
-  test('fails with 401 if un authorised', async () => {
-    const newNote = {
-      content: 'async/await simplifies making async calls',
-      important: true,
-    }
-
-    await api
-      .post('/api/notes')
-      .send(newNote)
-      .expect(401)
-      .expect('Content-Type', /application\/json/)
-
-
-
-  })
-  test('fails with status code 400 if data invaild', async () => {
-    const newNote = {
-      important: true
-    }
-
-    await api
-      .post('/api/notes')
-      .send(newNote)
-      .expect(400)
-
-    const notesAtEnd = await helper.notesInDb()
-
-    expect(notesAtEnd).toHaveLength(helper.initialNotes.length)
-  })
-})
 
 describe('deletion of a note', () => {
   test('succeeds with status code 204 if id is valid', async () => {
