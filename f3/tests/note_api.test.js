@@ -98,6 +98,22 @@ describe('addition of a new note', () => {
     )
   })
 
+
+  test('fails with 401 if un authorised', async () => {
+    const newNote = {
+      content: 'async/await simplifies making async calls',
+      important: true,
+    }
+
+    await api
+      .post('/api/notes')
+      .send(newNote)
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+
+
+
+  })
   test('fails with status code 400 if data invaild', async () => {
     const newNote = {
       important: true
