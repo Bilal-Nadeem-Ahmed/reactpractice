@@ -1,13 +1,13 @@
 import Note from "../note";
-import {useState} from 'react'
-import noteService from '../../services/notes.js'
+// import {useState} from 'react'
+// import noteService from '../../services/notes.js'
 import Notification from "../notificastion";
 
 const Application = ({notes,setNotes,errorMessage,setErrorMessage}) => {
   // const [newNote, setNewNote] = useState(
   //   'a new note...'
   // ) 
-  const[showAll,setShowAll]=useState(false)
+  // const[showAll,setShowAll]=useState(false)
   // const [errorMessage, setErrorMessage] = useState(null)
 
     
@@ -32,29 +32,29 @@ const Application = ({notes,setNotes,errorMessage,setErrorMessage}) => {
   //   console.log(event.target.value)
   //   setNewNote(event.target.value)
   // }
-  const toggleImportanceof=(id)=>{
-    const note = notes.find(n=>n.id ===id)
-    const changedNote ={...note,important: !note.important}
+  // const toggleImportanceof=(id)=>{
+  //   const note = notes.find(n=>n.id ===id)
+  //   const changedNote ={...note,important: !note.important}
 
-    noteService.update(id,changedNote)
-    .then(returnedNote=>{
-      setNotes(notes.map(note=> note.id !==id? note : returnedNote))
-    })
-    .catch(error => {
-      setErrorMessage(
-        `the note '${note.content}' was already deleted from server`
-      )
-      setTimeout(()=>{
-        setErrorMessage(null)
-      },5000)
-      setNotes(notes.filter(n => n.id !== id))
-    })
+  //   noteService.update(id,changedNote)
+  //   .then(returnedNote=>{
+  //     setNotes(notes.map(note=> note.id !==id? note : returnedNote))
+  //   })
+  //   .catch(error => {
+  //     setErrorMessage(
+  //       `the note '${note.content}' was already deleted from server`
+  //     )
+  //     setTimeout(()=>{
+  //       setErrorMessage(null)
+  //     },5000)
+  //     setNotes(notes.filter(n => n.id !== id))
+  //   })
     
-  }
+  // }
 
-  const notesToShow =showAll ? notes : notes.filter(note=>note.important )
+  // const notesToShow =showAll ? notes : notes.filter(note=>note.important )
     return ( <div>
-  <h1>Notes</h1>
+  {/* <h1>Notes</h1>
   <Notification message={errorMessage}/>
   <div>
         <button onClick={() => setShowAll(!showAll)}>
@@ -68,7 +68,7 @@ const Application = ({notes,setNotes,errorMessage,setErrorMessage}) => {
                note={note}
                toggleImportance={()=>toggleImportanceof(note.id)}/>
              )}
-      </ul>
+      </ul> */}
       {/* <form onSubmit={addNote}>
         <input value={newNote} onChange={handleNoteChange}/>
         <button type="submit">save</button>
