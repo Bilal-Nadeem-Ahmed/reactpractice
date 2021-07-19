@@ -3,35 +3,35 @@ import {useState} from 'react'
 import noteService from '../../services/notes.js'
 import Notification from "../notificastion";
 
-const Application = ({notes,setNotes}) => {
-  const [newNote, setNewNote] = useState(
-    'a new note...'
-  ) 
+const Application = ({notes,setNotes,errorMessage,setErrorMessage}) => {
+  // const [newNote, setNewNote] = useState(
+  //   'a new note...'
+  // ) 
   const[showAll,setShowAll]=useState(false)
-  const [errorMessage, setErrorMessage] = useState(null)
+  // const [errorMessage, setErrorMessage] = useState(null)
 
     
-  const addNote = (event) =>{
-    event.preventDefault()
+  // const addNote = (event) =>{
+  //   event.preventDefault()
 
-    const noteObject = {
-      content: newNote,
-      date: new Date().toISOString(),
-      important: Math.random() < 0.5,
+  //   const noteObject = {
+  //     content: newNote,
+  //     date: new Date().toISOString(),
+  //     important: Math.random() < 0.5,
      
-    }
-    noteService.create(noteObject)
-    .then(returnedNote=>{
-        setNotes(notes.concat(returnedNote))
-        setNewNote('')
-      })
+  //   }
+  //   noteService.create(noteObject)
+  //   .then(returnedNote=>{
+  //       setNotes(notes.concat(returnedNote))
+  //       setNewNote('')
+  //     })
    
-  }
+  // }
 
-  const handleNoteChange = (event) => {
-    console.log(event.target.value)
-    setNewNote(event.target.value)
-  }
+  // const handleNoteChange = (event) => {
+  //   console.log(event.target.value)
+  //   setNewNote(event.target.value)
+  // }
   const toggleImportanceof=(id)=>{
     const note = notes.find(n=>n.id ===id)
     const changedNote ={...note,important: !note.important}
@@ -69,10 +69,10 @@ const Application = ({notes,setNotes}) => {
                toggleImportance={()=>toggleImportanceof(note.id)}/>
              )}
       </ul>
-      <form onSubmit={addNote}>
+      {/* <form onSubmit={addNote}>
         <input value={newNote} onChange={handleNoteChange}/>
         <button type="submit">save</button>
-      </form>
+      </form> */}
 
     </div> );
 }
