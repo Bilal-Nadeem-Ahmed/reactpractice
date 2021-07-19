@@ -74,6 +74,7 @@ function App() {
     try{
       const user = await loginService.login({username,password})
       noteService.setToken(user.token)
+      console.log(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
