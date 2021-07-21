@@ -76,6 +76,10 @@ function App() {
     .then(returnedNote=>{
         setNotes(notes.concat(returnedNote))
         setNewNote('')
+        setErrorMessage('New note added!')
+        setTimeout(()=>{
+          setErrorMessage(null)
+        },5000)
       })
    
   }
@@ -88,6 +92,10 @@ function App() {
       setUser(user)
       setUsername('')
       setPassword('')
+      setErrorMessage(`${username} is successfully logged in`)
+      setTimeout(()=>{
+        setErrorMessage(null)
+      },5000)
     } catch(exception){
       setErrorMessage('Wrong Credentials')
       setTimeout(()=>{
@@ -98,22 +106,7 @@ function App() {
     }
     console.log('logging in with', username,password)
   }
-  const handleNoteChange = (event) => {
-    console.log(event.target.value)
-    setNewNote(event.target.value)
-  }
-
-
-
-  const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input
-        value={newNote}
-        onChange={handleNoteChange}
-      />
-      <button type="submit">save</button>
-    </form>  
-  )
+  
  
   return (
     <div className="App">
@@ -123,7 +116,7 @@ function App() {
     <div>
     {user === null ?
       <LoginForm username={username} setUsername={setUsername} password={password} setPassword={setPassword} handleLogin={handleLogin}/> :
-      <NoteForm addNote={addNote} newNote={setNewNote} handleNoteChange={handleNoteChange}/>
+      <NoteForm addNote={addNote} setNewNote={setNewNote} newNote={newNote} />
 
     }
         <button onClick={() => setShowAll(!showAll)}>
