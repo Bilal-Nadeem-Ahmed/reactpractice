@@ -5,6 +5,8 @@ import noteService from './services/notes'
 import loginService from './services/login'
 import Notification from './components/notificastion'
 import Note from './components/note'
+import LoginForm from './components/LoginForm';
+import NoteForm from './components/NoteForm';
 
 
 function App() {
@@ -101,29 +103,7 @@ function App() {
     setNewNote(event.target.value)
   }
 
-  const loginForm = ()=>(
-    <form onSubmit={handleLogin}>
-        <div>
-          username 
-          <input
-          type='text'
-          value={username}
-          name = 'Username'
-          onChange={({target})=>setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-          <input
-          type='password'
-          value={password}
-          name = 'Password'
-          onChange={({target})=>setPassword(target.value)}
-          />
-        </div>
-        <button type='submit'>login</button>
-      </form>
-  )
+
 
   const noteForm = () => (
     <form onSubmit={addNote}>
@@ -142,8 +122,9 @@ function App() {
      
     <div>
     {user === null ?
-      loginForm() :
-      noteForm()
+      <LoginForm username={username} setUsername={setUsername} password={password} setPassword={setPassword} handleLogin={handleLogin}/> :
+      <NoteForm addNote={addNote} newNote={setNewNote} handleNoteChange={handleNoteChange}/>
+
     }
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all' }
