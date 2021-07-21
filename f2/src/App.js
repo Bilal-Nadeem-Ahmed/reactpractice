@@ -7,6 +7,7 @@ import Notification from './components/notificastion'
 import Note from './components/note'
 import LoginForm from './components/LoginForm';
 import NoteForm from './components/NoteForm';
+import Toglable from './components/Togalable';
 
 
 function App() {
@@ -106,6 +107,21 @@ function App() {
     }
     console.log('logging in with', username,password)
   }
+
+  const loginForm = ()=>(
+    <Toglable buttonLabel='login'>
+     <LoginForm username={username} setUsername={setUsername} password={password} setPassword={setPassword} handleLogin={handleLogin}/> 
+     </Toglable>
+
+  )
+  const noteForm = ()=>{
+    return(
+      <Toglable buttonLabel='add Note'>
+     <NoteForm addNote={addNote} setNewNote={setNewNote} newNote={newNote} />
+     </Toglable>
+    )
+    
+  }
   
  
   return (
@@ -114,15 +130,21 @@ function App() {
   <Notification message={errorMessage}/>
      
     <div>
-    {user === null ?
-      <LoginForm username={username} setUsername={setUsername} password={password} setPassword={setPassword} handleLogin={handleLogin}/> :
-      <NoteForm addNote={addNote} setNewNote={setNewNote} newNote={newNote} />
-
+    
+    {user === null 
+    ?loginForm() 
+     :<div>
+       <p>{user.username} Logged In</p>
+       {noteForm()}
+     </div>
+     
     }
+    
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all' }
         </button>
     </div>
+     
       <ul>
         {notesToShow.map(note =>
              <Note

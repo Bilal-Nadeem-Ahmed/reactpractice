@@ -1,10 +1,11 @@
 const NoteForm = ({addNote,newNote,setNewNote}) => {
     return ( 
         <div>
+            <h2>Add a Note</h2>
             <form onSubmit={addNote}>
       <input
-        placeholder={newNote}
         type='text'
+        value={newNote}
         name='note'
         onChange={({target})=>setNewNote(target.value)}
       />
